@@ -1,0 +1,8 @@
+# Check and upload all the neccessary libraries in the matlab environment 
+# for the pair-wise comparative analysis
+
+validate <- try(library("limma"),silent = TRUE)
+if( class(validate) == 'try-error' ) {
+source("http://bioconductor.org/biocLite.R")
+biocLite("limma")
+library("limma")}
