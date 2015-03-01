@@ -15,10 +15,12 @@ warning off all;
 currentFolder = fileparts(mfilename('fullpath')); cd(currentFolder);
 addpath(genpath(currentFolder));
 
-if nargin<3 || isempty(groups)||length(groups)==1; groups = ones(1,size(Sp,1)); end
+if nargin<3 || isempty(groups)||length(groups)==1; 
+    groups = ones(1,size(Sp,1)); 
+end
 
 if ppm(1)>ppm(2)
-   [ppm sortIndcs] = sort(ppm);
+   [ppm, sortIndcs] = sort(ppm);
    Sp = Sp(:,sortIndcs);  X = X(:,sortIndcs);
 end
 
