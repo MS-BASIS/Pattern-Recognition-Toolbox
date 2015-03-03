@@ -19,6 +19,7 @@ end
 
 DRdata     = guidata(get(hTable,'Parent'));
 tag        = get(hTable,'Tag');
+table2data = get(DRdata.h.Def.Table2,'Data');
 if strcmp(tag,'MarkerSettings')
     %iGrp                            = eventdata.Indices(1);
     DRdata.spcolors(iGrp,:)         = table1data{iGrp,2};
@@ -91,7 +92,7 @@ if strcmp(tag,'MarkerSettings')
         'Color', DRdata.marker.color{iGrp});
     updatePlotsDR(DRdata);
 elseif strcmp(tag,'ImageSettings')
-    DRdata.PCplot.marker.selcolor            = table2data{1,2};
+    DRdata.PCplot.marker.selcolor            = str2num(table2data{1,2};
     DRdata.SPplot.linewidth                  = table2data{2,2};
     DRdata.SPplot.linewitdthIncrease         = table2data{3,2};
     DRdata.fontsize.sampleIds                = table2data{4,2};

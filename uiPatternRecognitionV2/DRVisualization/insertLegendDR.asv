@@ -4,10 +4,7 @@ function DRdata = insertLegendDR(DRdata)
 nGrps = length(DRdata.PCplot.legids); 
 for i = 1:nGrps
     if isnumeric(DRdata.PCplot.legids{i})
-        DRdata.PCplot.legids{i} = num2str(DRdata.PCplot.legids{i});
-    end
-end
-
+        num2strDRdata.PCplot.legids{i}
 DRdata.PCplot.h.legend = legend(DRdata.PCplot.h.scoresForLeg ,DRdata.PCplot.legids );
 set(DRdata.PCplot.h.legend,'FontSize',DRdata.fontsize.axis+4);
 legOutPos    = get(DRdata.PCplot.h.legend,'Position');
