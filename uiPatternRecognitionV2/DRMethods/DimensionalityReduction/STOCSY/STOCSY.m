@@ -1,4 +1,4 @@
-function hSTOCSY = STOCSY(Sp,X,ppm,peakID,pthr,CCmetric,barplot)
+function [hSTOCSY,CovXY] = STOCSY(Sp,X,ppm,peakID,pthr,CCmetric,barplot,DRdata)
 % Description: this function performs the STOCSY analysis on a selected
 % peak intensity variable defined by the PeakID chemical shift
 
@@ -36,6 +36,18 @@ if ppm(1)>ppm(2)
     ppm=sort(ppm);
 end
 
+if nargin == 8
+    axlabelfontsize = DRdata.fontsize.axislabel + 4;
+    axtitlefontsize = DRdata.fontsize.title + 4;
+    axisfontsize    = DRdata.fontsize.axis + 3; 
+    renderer        = DRdata.renderer;
+else
+    axlabelfontsize = 18;
+    axtitlefontsize = 24;
+    axisfontsize    = 16; 
+    renderer        = 'zbuffer';
+end
+
 peakIndex=find(ppm>=peakID,1,'first');
 %peakIndex=peakID;
 Y=X(:,peakIndex);
@@ -43,7 +55,7 @@ Y=X(:,peakIndex);
 [CCXY,pXY]     = corrcoeffs(X,Y,CCmetric);
 CCXY(pXY>pthr) = 0;
 meanSp         = mean(Sp);
-Sp              = Sp-(meanSp(ones(1,nsmpls),:));
+Sp             = Sp-(meanSp(ones(1,nsmpls),:));
 CovXY          = Sp'*(Y-mean(Y))./(nsmpls-1);
 
 if size(ppm,1)>size(ppm,2)
@@ -52,16 +64,16 @@ end
 %fullscreen         = get(0,'ScreenSize');
 %[fullscreen,~,~] = getDefaultScreenSize();
 hSTOCSY          = figure('Units','normalized',...
-    'OuterPosition',[0 0 1 1],'Renderer','zbuffer');
+    'OuterPosition',[0 0 1 1],'Renderer',renderer,'menu','none','Color',[1 1 1]);
 updateFigTitleAndIconMS(hSTOCSY,'STOCSY','MSINavigatorLogo.png')
 
 [ignore,hCB]       = plotCCValues(1:length(ppm),CovXY',abs(CCXY'),0,1,[],barplot);
 xlim([1 length(ppm)]);
 %xlabel('\delta,ppm','FontSize',18);
-xlabel('MZ','FontSize',18);
-set(get(hCB,'ylabel'),'String', 'abs(correlation coefficient)','FontSize',18);
-ylabel(['Covariance(X, mz = ',num2str(peakID),')'],'FontSize',18);
+xlabel('MZ','FontSize',axlabelfontsize);
+set(get(hCB,'ylabel'),'String', 'abs(correlation coefficient)','FontSize',axlabelfontsize);
+ylabel(['Covariance(X, mz = ',num2str(peakID),')'],'FontSize',axlabelfontsize);
 %set(gca,'YAxisLocation','Right');
 %set(gca,'xAxisLocation','Top');
-title(['STOCSY',' (', 'mz = ',num2str(peakID),')'],'FontSize',24);
-set(gca,'FontSize',16);
+title(['STOCSY',' (', 'mz = ',num2str(peakID),')'],'FontSize',axtitlefontsize);
+set(gca,'FontSize',axisfontsize);

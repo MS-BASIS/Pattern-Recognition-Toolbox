@@ -11,7 +11,7 @@ fullscreen = get(0,'ScreenSize');
 %[fullscreen,~,~] = getDefaultScreenSize();
 hFig = figure('Units', 'normalized', ...
     'OuterPosition',[0 0 1 1],...
-    'Color',DRdata.mainFig.backgroundcolor);
+    'Color',DRdata.mainFig.backgroundcolor,'menu','none','toolbar','none');
 updateFigTitleAndIconMS(hFig,'Cross Validation Diagnostics','MSINavigatorLogo.png');
 
 

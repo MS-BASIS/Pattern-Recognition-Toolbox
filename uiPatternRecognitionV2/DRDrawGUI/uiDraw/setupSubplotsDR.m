@@ -123,7 +123,7 @@ DRdata.pos.showBR = 0;
 DRdata            = deleteBRObjects(DRdata);
 
 set(DRdata.h.figure,'OuterPosition',[0 0 1 1]);
-set(DRdata.h.figure,'Visible','on');
+%set(DRdata.h.figure,'Visible','off');
 return;
 
 function grdata = arrangedata(data, groups, selsmpls)

@@ -5,7 +5,7 @@ if isempty(p)
     methodtype = 'Kruskal-Wallis ANOVA';
 end
     
-figure; set(gcf,'Units','normalized')  
+figure; set(gcf,'Units','normalized','Color',[1 1 1],'menu','none');  
 h  = gca;
 updateFigTitleAndIconMS(gcf,'Peak Statistics','MSINavigatorLogo.png')
 

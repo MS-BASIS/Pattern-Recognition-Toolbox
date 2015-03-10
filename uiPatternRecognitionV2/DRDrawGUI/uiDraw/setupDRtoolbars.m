@@ -4,7 +4,7 @@ function DRdata = setupDRtoolbars(DRdata)
 %% Input: DRdata -  GUI parameters 
 %% Author: Kirill Veselkov, Imperial College 2011
 
-DRdata = customizeMainTB(DRdata);
+%DRdata = customizeMainTB(DRdata);
 setSTOCSYmenus();
 DRdata = setupDRTB(DRdata);
 DRdata = setupDRLocalTB(DRdata);
@@ -27,22 +27,24 @@ set(hButton,'Enable','off');
 %hButton  = uipushtool(DRdata.h.MainTB);     
 %set(hButton,'Enable','off');
 
-uipushtool(DRdata.h.MainTB,'CData',DRdata.icons.defaults,'ClickedCallback',...
-    {@uiDRchangeFigDefaults},'TooltipString','Change figure defaults','tag','uiDRchangeFigDefaults','Separator','on');
-uipushtool(DRdata.h.MainTB,'CData',DRdata.icons.SavAas1,'ClickedCallback',...
-    {@uiDRexporData},'TooltipString','save results in a matlab environmnet','tag','uiDRsaveas');
-
 function DRdata = setupDRTB(DRdata)
 %% setupDRTB installs a toolbar used for GUI of dimension reduction methods
 %% Author: Kirill Veselkov, Imperial College London
+set(DRdata.h.figure,'ToolBar','figure');
+DRdata.h.MainTB = findall(DRdata.h.figure,'tag','FigureToolBar');
+hZoomin    = findall( DRdata.h.figure,'Tag','Exploration.ZoomIn');
+hZoomout   = findall( DRdata.h.figure,'Tag','Exploration.ZoomOut');
+
+
 DRdata.h.DRMethodsTB = uitoolbar(DRdata.h.figure,'tag','DRMethodsToolBar'); 
+copyobj([hZoomout,hZoomin],DRdata.h.DRMethodsTB ); delete(DRdata.h.MainTB);
 icons                = DRdata.icons;
 
 %% Upload MS data
-DRdata.h.uploadMSdata = uipushtool(DRdata.h.DRMethodsTB,'CData',...
-    icons.uploaddata,'ClickedCallback',{@uiUploadMSDataForClassificationDR},'TooltipString',...
-    'Upload CDF profile for classification',...
-    'tag','SpOrder');
+%DRdata.h.uploadMSdata = uipushtool(DRdata.h.DRMethodsTB,'CData',...
+%    icons.uploaddata,'ClickedCallback',{@uiUploadMSDataForClassificationDR},'TooltipString',...
+%    'Upload CDF profile for classification',...
+%    'tag','SpOrder');
 hButton  = uipushtool(DRdata.h.DRMethodsTB);
 set(hButton,'Enable','off');
 
@@ -80,10 +82,10 @@ DRdata.h.PLS = uitoggletool(DRdata.h.DRMethodsTB,'CData',...
 
 hButton  = uipushtool(DRdata.h.DRMethodsTB);
 set(hButton,'Enable','off');
-DRdata.h.SpOrder = uipushtool(DRdata.h.DRMethodsTB,'CData',...
-    icons.DR,'ClickedCallback',{@uidoSpOrderDR},'TooltipString',...
-    'Order similar profiles based on pair-wise similarities of scores via spectral algorithm ',...
-    'tag','SpOrder');
+%DRdata.h.SpOrder = uipushtool(DRdata.h.DRMethodsTB,'CData',...
+%    icons.DR,'ClickedCallback',{@uidoSpOrderDR},'TooltipString',...
+%    'Order similar profiles based on pair-wise similarities of scores via spectral algorithm ',...
+%    'tag','SpOrder');
 DRdata.h.DRLocalTBOutMap = uitoggletool(DRdata.h.DRMethodsTB,'CData',...
     icons.DR3Dplane,'ClickedCallback',{@uiGetOutlierMap},...
     'TooltipString','Get outlier map','tag','OutlierMap',...
@@ -91,10 +93,32 @@ DRdata.h.DRLocalTBOutMap = uitoggletool(DRdata.h.DRMethodsTB,'CData',...
 DRdata.h.CV = uitoggletool(DRdata.h.DRMethodsTB,'CData',...
     icons.CV,'ClickedCallback',{@uidoCV},'State','Off','TooltipString','Model cross validation','tag','CV','Separator','on');
 
-%uitoggletool(DRdata.h.DRMethodsTB,'CData',...
-%    icons.NMF1,'ClickedCallback',{@uidoDR},'State','Off','TooltipString','Conventional NMF','tag','convNMF','Separator','on');
-%uitoggletool(DRdata.h.DRMethodsTB,'CData',...
-%    icons.NMF2,'ClickedCallback',{@uidoDR},'State','Off','TooltipString','Sparse NMF','tag','SparseNMF');
+hButton  = uipushtool(DRdata.h.DRMethodsTB);
+set(hButton,'Enable','off');
+hButton  = uipushtool(DRdata.h.DRMethodsTB);
+set(hButton,'Enable','off');
+
+
+uipushtool(DRdata.h.DRMethodsTB,'CData',DRdata.icons.defaults,'ClickedCallback',...
+    {@uiDRchangeFigDefaults},'TooltipString','Change figure defaults','tag','uiDRchangeFigDefaults','Separator','on');
+uipushtool(DRdata.h.DRMethodsTB,'CData',DRdata.icons.SavAas1,'ClickedCallback',...
+    {@uiDRexporData},'TooltipString','save results in a matlab environmnet','tag','uiDRsaveas');
+
+%% workarounds for 2014b release with zoom in and zoom out functionalities
+hZoomin   = double(findall(DRdata.h.figure,'Tag','Exploration.ZoomIn'));
+if ishandle(hZoomin)
+    clbfun = get(hZoomin,'ClickedCallback');
+    if isempty(clbfun)
+        set(hZoomin,'ClickedCallback','putdowntext(''zoomin'',gcbo)');
+    end
+end
+hZoomout   = double(findall( DRdata.h.figure,'Tag','Exploration.ZoomOut'));
+if ishandle(hZoomout)
+    clbfun = get(hZoomout,'ClickedCallback');
+    if isempty(clbfun)
+        set(hZoomout,'ClickedCallback','putdowntext(''zoomout'',gcbo)');
+    end
+end
 return;
 
 function DRdata = setupDRLocalTB(DRdata)

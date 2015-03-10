@@ -2,6 +2,9 @@ function DRdata = updateLoadingPlotDR(DRdata,xlims)
 
 if length(DRdata.subplot.h)<5
     return;
+elseif ~ishandle(DRdata.subplot.h(5))
+    DRdata.subplot.h(5:end) = [];
+    return;
 end
 
 if nargin<2

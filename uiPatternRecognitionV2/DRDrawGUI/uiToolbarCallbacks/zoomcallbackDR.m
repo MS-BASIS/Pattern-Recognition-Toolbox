@@ -66,7 +66,7 @@ elseif (SubPlotIndex == 4) %% i.e. metabolic map of samples
         ylimsMap  = get(DRdata.subplot.h(4),'ylim');
         xlims     = get(DRdata.subplot.h(SubPlotIndex),'xlim');
     end
-    [xlims]   = getSpAxisLimitsDR(DRdata,xlims);
+    [xlims]         = getSpAxisLimitsDR(DRdata,xlims);
     nDPs            = sum((DRdata.ppm<DRdata.ppm(xlims(2)))&(DRdata.ppm>DRdata.ppm(xlims(1))));
     redRatio        = dataRedRatio(nDPs,DRdata.subplot.h(2)); temp = DRdata.redRatio; 
     DRdata.redRatio = redRatio; redRatio = temp;

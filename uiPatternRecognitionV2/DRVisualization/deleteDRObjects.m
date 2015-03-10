@@ -47,7 +47,7 @@ set(DRdata.h.rotatefactors,'Enable','Off');
 if ishandle(DRdata.h.rotateFactorsButtonGroup)
     delete(DRdata.h.rotateFactorsButtonGroup);
 end
-set(DRdata.h.SpOrder,'Enable','Off');
+%set(DRdata.h.SpOrder,'Enable','Off');
 set(DRdata.h.CV,'Enable','Off');
 
 if ishandle(DRdata.cv.h.rotatecvlabels)

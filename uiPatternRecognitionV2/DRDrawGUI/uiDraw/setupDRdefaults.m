@@ -26,8 +26,8 @@ DRdata.mainFig.backgroundcolor    = [1 1 1];
 %[fullscreen,~,~] = getDefaultScreenSize();
 DRdata.h.figure = figure(...
     'Units', 'normalized',...
-    'OuterPosition',[0 0 1 1],...
-    'Color',DRdata.mainFig.backgroundcolor);
+    'OuterPosition',[0 0 1 1],'Menu','none',...
+    'Color',DRdata.mainFig.backgroundcolor,'Visible','on');
 updateFigTitleAndIconMS(DRdata.h.figure,'Pattern Recognition Explorer','MSINavigatorLogo.png');
 
 %% Visualization defaults
@@ -97,6 +97,8 @@ matver = version;
 % if matlab version R2014b or older the colormap can be specific to axes
 if str2num(matver(1:3))>=8.4
     DRdata.renderer = 'opengl';
+else
+    DRdata.renderer = 'zbuffer';
 end
 %DRdata.fontsize.choosePCs             = 16;
 %DRdata.fontsize.sampleLabels          = 10;

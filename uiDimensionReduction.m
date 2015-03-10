@@ -37,7 +37,25 @@ set(hRotate,'ButtonDownFilter',@nofunction);
 
 DRdata = setupDRtoolbars(DRdata);          % setup all toolbars
 DRdata = setupSubplotsDR(DRdata);          % divide the figure into subplots
+% container = com.mathworks.mde.desk.MLDesktop.getInstance.getMainFrame; 
+%pos = fix(getpixelposition(container,1)); 
+%drawnow update; pause(0.01);
+%roundbuttonborder(DRdata.h.selsmpls);
+%roundbuttonborder(DRdata.h.legendbutton);
+%pos = get(DRdata.h.figure,'Position');
+%set(DRdata.h.figure, 'Position',pos-[5000,5000,0,0], 'Visible','on');
 
+
+%set(DRdata.h.figure, 'Visible','on');
+%drawnow; pause(0.01);
+%set(DRdata.h.figure, 'Visible','off');
+set(DRdata.h.figure, 'Visible','on');
+if ismac
+    objhandles = findobj(gcf,'-not',{'Type','uitoolbar'},'-not',{'type','figure'});
+    set(objhandles, 'Visible','off');
+    drawnow; pause(0.05);
+    set(objhandles, 'Visible','on'); set(DRdata.h.text,'Visible','off');
+end
 guidata(DRdata.h.figure,DRdata)
 
 function [DRdata] = getVarArgin(argsin,DRdata)

@@ -3,6 +3,7 @@ function DRdata = drawDRuibuttons(DRdata)
 % datasets
 
 %% Push Buttons: Sample selection & Outlier Removal & Swap between sample identifiers
+drawnow update;
 set(DRdata.subplot.h(1),'units','pixels');
 ax1Ptns               = get(DRdata.subplot.h(1),'Position');          % get subplot position
 selSmplsTogButPtns(1) = ax1Ptns(1)+ ax1Ptns(3) - 2*DRdata.icon.size;  % adjust positions
@@ -87,6 +88,7 @@ DRdata.h.RecPC(2) = uicontrol('style', 'checkbox',...                       % sw
     'TooltipString',['Exclude Component #',num2str(DRdata.PCplot.selPCs(2)),' from profile reconstruction'],'BackgroundColor',[0 0 0]);
 
 % convert plot units to normalized values
+%drawnow update; 
 set(DRdata.subplot.h(1:4),'Units','normalized');
 set(DRdata.subplot.h(1:4), 'DrawMode','fast');
 set(DRdata.h.legendbutton,'Selected','off');
@@ -102,6 +104,7 @@ set(DRdata.h.STOCSY_PB,'units','normalized');
 set(DRdata.h.plotPeakStat,'units','normalized');
 set(DRdata.h.swapBetweenXorRecXorRes,'units','normalized');
 set(DRdata.h.RecPC,'units','normalized');
+pause(0.05);
 
 set(DRdata.h.figure,'renderer',DRdata.renderer);
 if strcmp(DRdata.renderer,'OpenGL')

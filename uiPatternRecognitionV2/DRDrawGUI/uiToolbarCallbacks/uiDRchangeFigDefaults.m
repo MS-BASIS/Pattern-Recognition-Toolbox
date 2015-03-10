@@ -24,7 +24,7 @@ for iGrp = 1:nGrps
 end
 pstns      = get(DRdata.subplot.h(4),'Position');
 % source neccessary packages
-uitableclassppath = [DRdata.currentFolder '\SourcePackages\uitable\'];
+uitableclassppath = deSlash([DRdata.currentFolder '\SourcePackages\uitable\']);
 javaaddpath(uitableclassppath);
 %% Setup group names, colors and markers
 columnname      = {'Name', 'Color', 'Fill', 'Type','Order'};
@@ -39,8 +39,11 @@ table1Pstns        = get(DRdata.h.Def.Table1,'Extent');   % Required uitable siz
 if (pstns(3)-table1Pstns(3))/pstns(3)<0.5; % Check whether a table occupies the half width of the figure
     table1Pstns(3) = pstns(3)./2 -0.05*pstns(3);
 end
-table1Pstns(4) = 0.8*pstns(4);
-
+if (pstns(4)-table1Pstns(4))/pstns(4)<0.2; % Check whether a table occupies the 0.8 height of the figure
+   table1Pstns(4) = 0.8*pstns(4);
+else
+   table1Pstns(4) = table1Pstns(4) + table1Pstns(4)./nGrps;
+end
 table1Pstns(1) = pstns(1);
 table1Pstns(2) = pstns(2)+pstns(4)-table1Pstns(4);
 set(DRdata.h.Def.Table1,'Position',table1Pstns);
@@ -57,7 +60,7 @@ jtable.getColumnModel.getColumn(1).setCellEditor(ColorCellEditor);
 JCheckBox = javax.swing.JCheckBox;
 editor    = javax.swing.DefaultCellEditor(JCheckBox);
 jtable.getColumnModel.getColumn(2).setCellEditor(editor);
-jtable.repaint
+jtable.repaint; jtable1 = jtable;
 hModel = handle(jtable.getModel, 'CallbackProperties');
 set(hModel,'TableChangedCallback',{@defTableEditCallBackDR,DRdata.h.Def.Table1});
 %set(DRdata.h.Def.Table1,'CellEditCallback',{@defTableEditCallBackDR,jtable});
@@ -98,6 +101,10 @@ end
 if (pstns(4)-table2Pstns(4))/pstns(4)<0.2; % Check whether a table occupies the 0.8 height of the figure
     table2Pstns(4) = 0.8*pstns(4);
 end
+% re-adjust table 1 positions
+table1Pstns(4) = min([table1Pstns(4),table2Pstns(4)]);
+set(DRdata.h.Def.Table1,'Position',table1Pstns);
+% calculate position for table 2
 table2Pstns(1) = pstns(1)+table1Pstns(3);
 table2Pstns(2) = pstns(2)+pstns(4)-table2Pstns(4);
 set(DRdata.h.Def.Table2,'Position',table2Pstns);
@@ -107,7 +114,7 @@ tabpos = get(DRdata.h.Def.Table2,'Position');
 jscroll = findjobj(DRdata.h.Def.Table2);
 jtable  = jscroll.getViewport.getView;
 jtable.setModel(javax.swing.table.DefaultTableModel(Data',columnname));
-jtable.repaint
+jtable.repaint; jtable2 = jtable;
 % adjust column width
 jcol   = jtable.getColumnModel.getColumn(0);
 jcol.setPreferredWidth(2*tabpos(3)/3);
@@ -130,7 +137,7 @@ PB1Pstns(4) = table2Pstns(4)./5;
 PB1Pstns(2) = table2Pstns(2)-PB1Pstns(4);
 DRdata.h.Def.PB1 = uicontrol(gcf,'Style','PushButton','Units','normalized',...
     'String','Make as defaults','Tag','Make as defaults','Position',...
-    PB1Pstns,'Callback',{@defTableEditCallBackDR,jtable});
+    PB1Pstns,'Callback',{@defTableEditCallBackDR,jtable1,jtable2});
 PB2Pstns    = PB1Pstns;
 PB2Pstns(1) = PB1Pstns(1)+PB1Pstns(3);
 DRdata.h.Def.PB2 = uicontrol(gcf,'Style','PushButton','Units','normalized',...

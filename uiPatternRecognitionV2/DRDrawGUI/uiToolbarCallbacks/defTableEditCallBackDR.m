@@ -1,24 +1,26 @@
-function defTableEditCallBackDR(hTable,eventdata,mTable)
+function defTableEditCallBackDR(htable,eventdata,jtable1,jtable2)
 %% defTableEditCallBackDR updates properties of DR objects
 %    Input: hTable - a table handle
 %% Author: Kirill A. Veselkov, Imperial College 2011.
 
 if nargin==3
-    try
-        jtable = hTable; 
-        table1data = getjtabledata(jtable);
+    if ~isempty(strfind(get(htable,'Class'),'DefaultTableModel'))
+        %  jtable = hTable;
+        table1data = getjtabledata(htable);
         table2data = table1data;
         iGrp   = eventdata.getFirstRow+1;
         jCol   = eventdata.getColumn+1;
-        hTable = mTable;
-    catch
-        jtable = handle(mTable.getModel);
-        table1data = getjtabledata(jtable);
+        htable = jtable1;
     end
+elseif nargin==4
+    jtable1    = handle(jtable1.getModel);
+    jtable2    = handle(jtable2.getModel);
+    table1data = getjtabledata(jtable1);
+    table2data = getjtabledata(jtable2);
 end
 
-DRdata     = guidata(get(hTable,'Parent'));
-tag        = get(hTable,'Tag');
+DRdata     = guidata(get(htable,'Parent'));
+tag        = get(htable,'Tag');
 if strcmp(tag,'MarkerSettings')
     %iGrp                            = eventdata.Indices(1);
     DRdata.spcolors(iGrp,:)         = table1data{iGrp,2};
@@ -26,6 +28,9 @@ if strcmp(tag,'MarkerSettings')
     DRdata.PCplot.marker.fill{iGrp} = table1data{iGrp,3};
     DRdata.PCplot.marker.type{iGrp} = table1data{iGrp,4};
     DRdata.groupIds{iGrp}           = table1data{iGrp,1};
+    if isnumeric(DRdata.groupIds{iGrp})
+        DRdata.groupIds{iGrp} = num2str(DRdata.groupIds{iGrp});
+    end
     DRdata.PCplot.legids            = [DRdata.groupIds', DRdata.PCplot.mislegendids];
 
     if ~isempty(DRdata.PCplot.spIndcs)
@@ -129,19 +134,19 @@ elseif strcmp(tag,'Make as defaults')
     defaults.marker                         = DRdata.marker;
     defaults.SPplot                         = DRdata.SPplot;
     defaults.PCplot                         = DRdata.PCplot;
-    defaults.marker.selcolor                   = str2num(table2data{1,2});
-    defaults.SPplot.linewidth                  = str2num(table2data{2,2});
-    defaults.SPplot.zoomLinewidthIncrease      = str2num(table2data{3,2});
-    defaults.fontsize.sampleIds                = str2num(table2data{4,2});
-    defaults.fontsize.axis                     = str2num(table2data{5,2});
-    defaults.fontsize.axislabel                = str2num(table2data{6,2});
-    defaults.fontsize.title                    = str2num(table2data{7,2});
-    defaults.PCplot.marker.linewidth           = str2num(table2data{8,2});
-    defaults.PCplot.marker.size                = str2num(table2data{9,2});
-    defaults.PCplot.marker.zoomMarSizeIncrease = str2num(table2data{10,2});
-    defaults.SPplot.regions.color              = str2num(table2data{11,2});
+    defaults.marker.selcolor                   = table2data{1,2};
+    defaults.SPplot.linewidth                  = table2data{2,2};
+    defaults.SPplot.zoomLinewidthIncrease      = table2data{3,2};
+    defaults.fontsize.sampleIds                = table2data{4,2};
+    defaults.fontsize.axis                     = table2data{5,2};
+    defaults.fontsize.axislabel                = table2data{6,2};
+    defaults.fontsize.title                    = table2data{7,2};
+    defaults.PCplot.marker.linewidth           = table2data{8,2};
+    defaults.PCplot.marker.size                = table2data{9,2};
+    defaults.PCplot.marker.zoomMarSizeIncrease = table2data{10,2};
+    defaults.SPplot.regions.color              = table2data{11,2};
     defaults.renderer                          = table2data{12,2};
-    defaults.peakPickedData                    = str2num(table2data{13,2});
+    defaults.peakPickedData                    = table2data{13,2};
     defaults.xlabel                            = table2data{14,2};
     defaults.xreverse                          = table2data{15,2};
     defaults.maxNumPoints                      = table2data{16,2};
@@ -157,8 +162,8 @@ elseif strcmp(tag,'Make as defaults')
     end
     delete([DRdata.h.Def.Table1,DRdata.h.Def.Table2,...
         DRdata.h.Def.PB1,DRdata.h.Def.PB2]);
-    defaultsPR = defaults;
-    load([DRdata.currentFolder,'\msidefaults.mat']);
+    defaultsPR = defaults; cd(deSlash([DRdata.currentFolder]));
+    load(deSlash([DRdata.currentFolder,'\msidefaults.mat']));
     defaults.PatternRecognition = defaultsPR;
     save msidefaults defaults
     return;

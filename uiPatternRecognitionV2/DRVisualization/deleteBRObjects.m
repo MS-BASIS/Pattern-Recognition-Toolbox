@@ -4,7 +4,7 @@ function DRdata = deleteBRObjects(DRdata)
 set(DRdata.h.DRLocalTBOutMap,'Enable','On');
 set(DRdata.h.showLoadingPlot,'Enable','On')
 set(DRdata.h.rotatefactors,'Enable','On');
-set(DRdata.h.SpOrder,'Enable','On');
+%set(DRdata.h.SpOrder,'Enable','On');
 set(DRdata.h.CV,'Enable','On');
 if ishandle(DRdata.h.CBSubP1)
     delete(DRdata.h.CBSubP1);
