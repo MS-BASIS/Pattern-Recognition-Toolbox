@@ -1,5 +1,5 @@
 function DRdata = plotLoadingsOrVrbVarDR(DRdata,showVarExplByPCs)
-%% plotLoadingsOrVrbVarDR creates image or line objects of PC loagins 
+%% plotLoadingsOrVrbVarDR creates image or line objects of PC loadings 
 %% or individual variable variances explained by the PCs
 %       Input: DRdata - data of DR toolbox objects
 %% Author: Kirill A. Veselkov, Imperial College London 2011

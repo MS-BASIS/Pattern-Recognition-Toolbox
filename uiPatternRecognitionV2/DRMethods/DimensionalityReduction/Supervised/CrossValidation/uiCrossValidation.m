@@ -119,8 +119,13 @@ DRdata.cv.T                            = cvtest.T;
 for iComp = 1:DRdata.cv.nComps
     DRdata.loadings(:,iComp) = P*(cvtest.X'*cvtest.T(:,iComp)./(cvtest.T(:,iComp)'*cvtest.T(:,iComp)));
 end
+DRdata.loadings(isnan(DRdata.loadings)) = 0;
 DRdata = plotClassifierPerfomanceDR(DRdata);
 DRdata = updateAllSubPlots(DRdata);
+
+if length(unique(DRdata.groupdata))==2;
+    roc(DRdata.groupdata,DRdata.cv.T(:,1),1);
+end
 
 %% insert label rotation button
 Pos1   = get(DRdata.h.legendbutton,'Position');
@@ -128,6 +133,13 @@ Pos1(2) = Pos1(2) - Pos1(4);
 DRdata.cv.h.rotatecvlabels = uicontrol('style', 'pushbutton','CData',...             % sample selection
     DRdata.icons.rotateclockwise,'units','normalized','Position',Pos1,...
     'Callback', @changeCVScoreLablesDR, 'TooltipString','Show missclassified samples');
+if ismac
+    set(DRdata.cv.h.rotatecvlabels,'Visible','off');
+    drawnow; pause(0.05);
+    set(DRdata.cv.h.rotatecvlabels,'Visible','on');
+end
+
+
 %jButton = java(findjobj(DRdata.cv.h.rotatecvlabels));
 %set(jButton,'Border',[]);
 DRdata.cv.case = 1;

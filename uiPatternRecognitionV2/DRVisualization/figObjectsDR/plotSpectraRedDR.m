@@ -74,7 +74,10 @@ end
 %if ~isempty(DRdata.test)
 %    plotTestSpecrumDR(DRdata,0,1,xlims);
 %end
-
+if strcmp(get(DRdata.h.showLoadingPlot,'State'),'on')
+    set(DRdata.subplot.h(2),'YAxisLocation','Left');
+    set(DRdata.subplot.h(2),'XAxisLocation','Top');
+end
 ylim(ylims); xlim(xlims);
 DRdata = getAxisTickMarksDR(DRdata);
 DRdata.h.PCregions = drawRectangleDR(DRdata);

@@ -89,6 +89,8 @@ end
 
 if ~isempty(DRdata.replicates)
     DRdata.replicates = grp2idx(DRdata.replicates);
+else
+    DRdata.replicates = 1:nSmpls;
 end
 
 if size(DRdata.groupIds,1)<size(DRdata.groupIds,2)
@@ -120,6 +122,14 @@ if isnumeric(DRdata.sampleIDs)
     end
 end
 
+if DRdata.NMR==1
+    DRdata.SPplot.xreverse                 = 1;
+    DRdata.SPplot.xlabel                   = '1H ppm';
+    %% Bucketted data
+else
+    DRdata.SPplot.xreverse                 = 0;
+    DRdata.SPplot.xlabel                   = 'MZ';
+end
 
 return;
 

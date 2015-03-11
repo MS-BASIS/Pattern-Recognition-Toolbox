@@ -9,24 +9,6 @@ setSTOCSYmenus();
 DRdata = setupDRTB(DRdata);
 DRdata = setupDRLocalTB(DRdata);
 
-function DRdata = customizeMainTB(DRdata)
-%% The function customizes the main figure toolbars 
-%     Input: DRdata -  GUI parameters 
-set(DRdata.h.figure,'ToolBar','figure');
-DRdata.h.MainTB = findall(DRdata.h.figure,'tag','FigureToolBar');
-set(DRdata.h.MainTB,'tag','FigureModToolBar');
-hMainTBButtons    = findall(DRdata.h.MainTB );
-delete(hMainTBButtons([14:17 6:8]));
-hMainTBButtons    = findall(DRdata.h.MainTB);
-set(hMainTBButtons(end-3),'Separator','on'); 
-hButton           = uipushtool(DRdata.h.MainTB);     
-set(hButton,'Enable','off');
-
-%uipushtool(DRdata.h.MainTB,'CData',DRdata.icons.stocsy,'ClickedCallback',...
-%    {@uidoSTOCSY},'TooltipString','STOCSY it','tag','STOCSY');
-%hButton  = uipushtool(DRdata.h.MainTB);     
-%set(hButton,'Enable','off');
-
 function DRdata = setupDRTB(DRdata)
 %% setupDRTB installs a toolbar used for GUI of dimension reduction methods
 %% Author: Kirill Veselkov, Imperial College London

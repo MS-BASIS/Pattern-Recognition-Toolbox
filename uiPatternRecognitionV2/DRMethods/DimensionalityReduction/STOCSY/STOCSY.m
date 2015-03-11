@@ -70,10 +70,21 @@ updateFigTitleAndIconMS(hSTOCSY,'STOCSY','MSINavigatorLogo.png')
 [ignore,hCB]       = plotCCValues(1:length(ppm),CovXY',abs(CCXY'),0,1,[],barplot);
 xlim([1 length(ppm)]);
 %xlabel('\delta,ppm','FontSize',18);
-xlabel('MZ','FontSize',axlabelfontsize);
+if DRdata.NMR==1
+    DRdata.SPplot.xreverse                 = 1;
+    DRdata.SPplot.xlabel                   = '1H ppm';
+    %% Bucketted data
+else
+    DRdata.SPplot.xreverse                 = 0;
+    DRdata.SPplot.xlabel                   = 'MZ';
+end
+xlabel( DRdata.SPplot.xlabel ,'FontSize',axlabelfontsize);
 set(get(hCB,'ylabel'),'String', 'abs(correlation coefficient)','FontSize',axlabelfontsize);
-ylabel(['Covariance(X, mz = ',num2str(peakID),')'],'FontSize',axlabelfontsize);
+ylabel(['Covariance(X,'  DRdata.SPplot.xlabel '= ',num2str(peakID),')'],'FontSize',axlabelfontsize);
 %set(gca,'YAxisLocation','Right');
 %set(gca,'xAxisLocation','Top');
-title(['STOCSY',' (', 'mz = ',num2str(peakID),')'],'FontSize',axtitlefontsize);
+title(['STOCSY',' (',  DRdata.SPplot.xlabel ' = ',num2str(peakID),')'],'FontSize',axtitlefontsize);
+if DRdata.SPplot.xreverse == 1
+    set(gca,'XDir','reverse');
+end
 set(gca,'FontSize',axisfontsize);
